@@ -1,0 +1,6 @@
+class roleInfo [key=ID,source="AI角色配置.xlsx"]{
+	int32 ID;		[option="ID"]
+	int32 AiDataId	[option="AI数据ID"]
+	string name;	[option="名称"]
+	string resModel;	[option="模型资源"] //要加载的模型资源
+}
