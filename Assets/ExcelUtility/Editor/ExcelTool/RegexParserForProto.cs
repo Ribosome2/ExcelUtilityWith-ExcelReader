@@ -7,8 +7,8 @@ public static class RegexParserForProto  {
     public static void InitParse(string strSrc)
     {
 
-        string strPattern = @"class\s+(?<className>\w+)\s+\[key=(?<keyName>\w+),source=[""](?<fileSrc>\w+.[a-z]+)[""]\](?<fields>[\s\S\w\W\d\D\\[\]\n]+)";
-        Regex regex=new Regex(strPattern);
+       
+        Regex regex = new Regex(@"class\s+(?<className>\w+)\s+\[key=(?<keyName>\w+),source=[""](?<fileSrc>\w+.[a-z]+)[""]\](?<fields>[\s\S\w\W\d\D\\[\]\n]+)");
         Match match = regex.Match(strSrc);
         if (match.Success)
         {
@@ -19,11 +19,13 @@ public static class RegexParserForProto  {
             ProtoInfo info=new ProtoInfo();
             info.ClassName = match.Groups["className"].Value;
             info.KeyName = match.Groups["keyName"].Value;
+            info.SrcFile = match.Groups["fileSrc"].Value;
             string fieldsStr = match.Groups["fields"].Value;
 
-            Match m = Regex.Match(fieldsStr, @"(?<filedType>[\w\d]+)\s+(?<filedName>[\w\d]+);?\s+\[option=[""](?<tableField>\w+)[""]\]");
-                   
-                   
+
+            Match m = Regex.Match(fieldsStr, @"(?<filedType>[\w\d]+)\s+(?<filedName>[\w\d]+);?\s+\[option=[""](?<tableField>\w+)[""]\]\s?(?<comment>//(.*?)\r?\n)?");
+
+            //匹配注释的原理：(?<comment>//(.*?)\r?\n)?尤其要注意括号后面的？表示()里的匹配内容是可选的
             while (m.Success)
             {
                 ProtoInfo.ProtoFiledInfo protoFiledInfo=new ProtoInfo.ProtoFiledInfo();
