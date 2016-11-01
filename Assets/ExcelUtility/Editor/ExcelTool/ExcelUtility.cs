@@ -20,6 +20,13 @@ public class ExcelUtility : EditorWindow {
         CodeGeneratorHelper.ScanFiles();
     }
 
+     [MenuItem("Docs/GenerateByRegex")]
+    public static void ReadFromRegex()
+    {
+        string path = Application.dataPath + "/../Doc/角色表定义.prot";
+        RegexParserForProto.InitParse(File.ReadAllText(path));
+    }
+
     private static  string[] COMMONTYPES =new string[] {"int,string"};
 
 
